@@ -27,7 +27,7 @@
                     </th>
 
                     <th>
-                        <a class="cm-ajax" href="{"`$c_url`&sort_by=title&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("checkout_question")}{if $search.sort_by == "title"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
+                        <a class="cm-ajax" href="{"`$c_url`&sort_by=title&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("checkout_question.title")}{if $search.sort_by == "title"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                     </th>
 
                     <th class="mobile-hide">
@@ -109,10 +109,8 @@
     {dropdown content=$smarty.capture.tools_list class="mobile-hide"}
     {/capture}
     {capture name="adv_buttons"}
-    {hook name="checkout_questions:adv_buttons"}
     {include file="common/tools.tpl" tool_href="checkout_questions.add" prefix="top" hide_tools="true" title=__("add_checkout_question")
     icon="icon-plus"}
-    {/hook}
     {/capture}
 
 </form>
@@ -124,7 +122,7 @@
 {include file="addons/checkout_questions/views/checkout_questions/components/checkout_questions_search_form.tpl" dispatch="checkout_questions.manage"}
 {/capture}
 
-{$page_title = __("checkout_questions")}
+{$page_title = __("checkout_questions.page_title")}
 {$select_languages = true}
 
 {include file="common/mainbox.tpl" title=$page_title content=$smarty.capture.mainbox buttons=$smarty.capture.buttons
