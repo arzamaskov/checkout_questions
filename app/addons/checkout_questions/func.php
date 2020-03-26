@@ -126,25 +126,7 @@ function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE
     $condition = db_quote("WHERE ?:checkout_questions.question_id = ?i", $question_id);
     $condition .= (AREA == 'A') ? '' : " AND ?:checkout_questions.status IN ('A', 'H') ";
 
-    /**
-     * Prepare params for checkout questions data SQL query
-     *
-     * @param int   $question_id Question ID
-     * @param str   $lang_code Language code
-     * @param array $fields    Fields list
-     * @param array $joins     Joins list
-     * @param str   $condition Conditions query
-     */
-
     $checkout_question = db_get_row("SELECT " . implode(", ", $fields) . " FROM ?:checkout_questions " . implode(" ", $joins) ." $condition");
-
-    /**
-     * Post processing of checkout question data
-     *
-     * @param int   $question_id Question ID
-     * @param str   $lang_code Language code
-     * @param array $checkout_question    Checkout question data
-     */
 
     return $checkout_question;
 }
@@ -173,4 +155,20 @@ function fn_checkout_questions_update_question($data, $question_id, $lang_code =
     }
 
     return $question_id;
+}
+
+/**
+ * Deletes checkout question and all related data
+ *
+ * @param int $question_id Checkout question identificator
+ */
+function fn_delete_checkout_question_by_id($question_id)
+{
+    if (!empty($question_id) && fn_check_company_id('checkout_questions', 'question_id', $question_id)) {
+        db_query("DELETE FROM ?:checkout_questions WHERE question_id = ?i", $question_id);
+        db_query("DELETE FROM ?:checkout_question_descriptions WHERE question_id = ?i", $question_id);
+
+        Block::instance()->removeDynamicObjectData('checkout_questions', $question_id);
+
+    }
 }
