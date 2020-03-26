@@ -10,6 +10,17 @@ if ($_SERVER['REQUEST_METHOD']	== 'POST') {
     $suffix = '';
 
     //
+    // Delete banners
+    //
+    if ($mode == 'm_delete') {
+        foreach ($_REQUEST['checkout_question_ids'] as $v) {
+            fn_delete_checkout_question_by_id($v);
+        }
+
+        $suffix = '.manage';
+    }
+
+    //
     // Add/edit banners
     //
     if ($mode == 'update') {
@@ -18,13 +29,21 @@ if ($_SERVER['REQUEST_METHOD']	== 'POST') {
         $suffix = ".update?question_id=$question_id";
     }
 
+    if ($mode == 'delete') {
+        if (!empty($_REQUEST['question_id'])) {
+            fn_delete_checkout_question_by_id($_REQUEST['question_id']);
+        }
+
+        $suffix = '.manage';
+    }
+
 
     return array(CONTROLLER_STATUS_OK, 'checkout_questions' . $suffix);
 }
 
 if ($mode == 'update') {
     $checkout_question = fn_get_checkout_questions_data($_REQUEST['question_id'], DESCR_SL);
-
+    
     if (empty($checkout_question)) {
         return array(CONTROLLER_STATUS_NO_PAGE);
     }
