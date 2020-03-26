@@ -22,7 +22,7 @@
                         {include file="common/check_items.tpl" class="cm-no-hide-input"}
                     </th>
     
-                    <th width="6%" class="nowrap">
+                    <th>
                         <a class="cm-ajax" href="{"`$c_url`&sort_by=position&sort_order=`$search.sort_order_rev`"|fn_url}" data-ca-target-id={$rev}>{__("position_short")}{if $search.sort_by == "position"}{$c_icon nofilter}{else}{$c_dummy nofilter}{/if}</a>
                     </th>
 
