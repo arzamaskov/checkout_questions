@@ -10,11 +10,11 @@ if (!defined('BOOTSTRAP')) { die('Access denied'); }
 /**
  * Gets questions list by search params
  *
- * @param array  $params         Banner search params
+ * @param array  $params         Checkout question search params
  * @param string $lang_code      2 letters language code
  * @param int    $items_per_page Items per page
  *
- * @return array Banners list and Search params
+ * @return array Checkout questions list and Search params
  */
 function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE, $items_per_page = 0)
 {
@@ -98,4 +98,79 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
     }   
 
     return array($questions, $params);
+}
+
+
+//
+// Get specific checkout question data
+//
+function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE)
+{
+    // Unset all SQL variables
+    $fields = $joins = array();
+    $condition = '';
+
+    $fields = array (
+        '?:checkout_questions.question_id',
+        '?:checkout_questions.position',
+        '?:checkout_question_descriptions.title',
+        '?:checkout_questions.type',
+        '?:checkout_questions.required',
+        '?:checkout_questions.status',
+        '?:checkout_questions.localization',
+        '?:checkout_questions.timestamp',
+    );
+
+    $joins[] = db_quote("LEFT JOIN ?:checkout_question_descriptions ON ?:checkout_question_descriptions.question_id = ?:checkout_questions.question_id AND ?:checkout_question_descriptions.lang_code = ?s", $lang_code);
+
+    $condition = db_quote("WHERE ?:checkout_questions.question_id = ?i", $question_id);
+    $condition .= (AREA == 'A') ? '' : " AND ?:checkout_questions.status IN ('A', 'H') ";
+
+    /**
+     * Prepare params for checkout questions data SQL query
+     *
+     * @param int   $question_id Question ID
+     * @param str   $lang_code Language code
+     * @param array $fields    Fields list
+     * @param array $joins     Joins list
+     * @param str   $condition Conditions query
+     */
+
+    $checkout_question = db_get_row("SELECT " . implode(", ", $fields) . " FROM ?:checkout_questions " . implode(" ", $joins) ." $condition");
+
+    /**
+     * Post processing of checkout question data
+     *
+     * @param int   $question_id Question ID
+     * @param str   $lang_code Language code
+     * @param array $checkout_question    Checkout question data
+     */
+
+    return $checkout_question;
+}
+
+function fn_checkout_questions_update_question($data, $question_id, $lang_code = DESCR_SL)
+{
+    SecurityHelper::sanitizeObjectData('checkout_question', $data);
+
+    if (isset($data['timestamp'])) {
+        $data['timestamp'] = fn_parse_date($data['timestamp']);
+    }
+
+    $data['localization'] = empty($data['localization']) ? '' : fn_implode_localizations($data['localization']);
+
+    if (!empty($question_id)) {
+        db_query("UPDATE ?:checkout_questions SET ?u WHERE question_id = ?i", $data, $question_id);
+        db_query("UPDATE ?:checkout_question_descriptions SET ?u WHERE question_id = ?i AND lang_code = ?s", $data, $question_id, $lang_code);
+
+    } else {
+        $question_id = $data['question_id'] = db_query("REPLACE INTO ?:checkout_questions ?e", $data);
+
+        foreach (Languages::getAll() as $data['lang_code'] => $v) {
+            db_query("REPLACE INTO ?:checkout_question_descriptions ?e", $data);
+        }
+
+    }
+
+    return $question_id;
 }
