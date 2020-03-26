@@ -1,5 +1,3 @@
-{$checkout_question|@fn_print_r}
-
 {if $checkout_question}
     {assign var="id" value=$checkout_question.question_id}
 {else}
@@ -31,7 +29,7 @@
         <div class="control-group">
             <label for="elm_checkout_question_title" class="control-label cm-required">{__("checkout_question.title")}</label>
             <div class="controls">
-            <input type="text" name="checkout_question_data[question]" id="elm_checkout_question_title" value="{$checkout_question.title}" size="25" class="input-large" /></div>
+            <input type="text" name="checkout_question_data[title]" id="elm_checkout_question_title" value="{$checkout_question.title}" size="25" class="input-large" /></div>
         </div>
 
         <div class="control-group">
@@ -50,8 +48,8 @@
         <div class="control-group">
             <label class="control-label" for="elm_checkout_question_required">{__("required")}</label>
             <div class="controls">
-            <input type="hidden" name="checkout_quesion_data[required]" value="N" />
-            <input type="checkbox" name="checkout_quesion_data[required]" id="elm_checkout_question_required" value="Y" {if $checkout_question.required == "Y"}checked="checked"{/if} />
+            <input type="hidden" name="checkout_question_data[required]" value="N" />
+            <input type="checkbox" name="checkout_question_data[required]" id="elm_checkout_question_required" value="Y" {if $checkout_question.required == "Y"}checked="checked"{/if} />
             </div>
         </div>
 

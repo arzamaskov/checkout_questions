@@ -63,7 +63,7 @@
                 </td>
 
                 <td class="{$no_hide_input}" data-th="{__("checkout_question")}">
-                    <a class="row-status" href="{" checkout_questions.update?question_id=`$checkout_question.question_id`"|fn_url}">{$checkout_question.title}</a>
+                    <a class="row-status" href="{"checkout_questions.update?question_id=`$checkout_question.question_id`"|fn_url}">{$checkout_question.title}</a>
                 </td>
 
                 <td class="nowrap row-status {$no_hide_input} mobile-hide">
