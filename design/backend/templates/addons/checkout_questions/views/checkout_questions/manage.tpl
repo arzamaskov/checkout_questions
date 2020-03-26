@@ -67,7 +67,11 @@
                 </td>
 
                 <td class="nowrap row-status {$no_hide_input} mobile-hide">
-                    {if $checkout_question.type == ""}{__("checkout_question.type_other")}{else}{__("checkout_question.type")}{/if}
+                    {if $checkout_question.type == "S"}{__("checkout_question_selectbox")}
+                    {elseif $checkout_question.type == "R"}{__("checkout_question_radio")}
+                    {elseif $checkout_question.type == "C"}{__("checkout_question_checkbox")}
+                    {elseif $checkout_question.type == "I"}{__("checkout_question_input")}
+                    {else}{__("checkout_question.text")}{/if}
                 </td>
 
                 <td class="nowrap row-status {$no_hide_input} mobile-hide">

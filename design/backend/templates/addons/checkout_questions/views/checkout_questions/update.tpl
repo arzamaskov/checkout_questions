@@ -105,4 +105,4 @@
     buttons=$smarty.capture.buttons
     select_languages=true}
 
-{** banner section **}
+{** checkout questions section **}
