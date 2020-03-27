@@ -33,15 +33,9 @@
         </div>
 
         <div class="control-group">
-            <label for="elm_checkout_question_type" class="control-label cm-required">{__("type")}</label>
+            <label class="control-label" for="elm_checkout_question_type_{$id}">{__("type")}</label>
             <div class="controls">
-            <select name="checkout_question_data[type]" id="elm_checkout_question_type" onchange="Tygh.$('#checkout_question_graphic').toggle();  Tygh.$('#checkout_question_text').toggle(); Tygh.$('#checkout_question_url').toggle();  Tygh.$('#checkout_question_target').toggle();">
-                <option {if $checkout_question.type == "S"}selected="selected"{/if} value="S">{__("checkout_question_selectbox")}</option>
-                <option {if $checkout_question.type == "R"}selected="selected"{/if} value="R">{__("checkout_question_radio")}</option>
-                <option {if $checkout_question.type == "C"}selected="selected"{/if} value="C">{__("checkout_question_checkbox")}</option>
-                <option {if $checkout_question.type == "I"}selected="selected"{/if} value="I">{__("checkout_question_input")}</option>
-                <option {if $checkout_question.type == "T"}selected="selected"{/if} value="T">{__("checkout_question_text")}</option>
-            </select>
+            {include file="addons/checkout_questions/views/checkout_questions/components/checkout_questions_types.tpl"  name="checkout_question_data[type]" value=$checkout_question.type display="select" tag_id="elm_checkout_question_type_`$id`" check=true}
             </div>
         </div>
 
