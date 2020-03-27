@@ -44,7 +44,7 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
         $limit = db_quote(' LIMIT 0, ?i', $params['limit']);
     }
 
-    $sorting = db_sort($params, $sortings, 'title', 'asc');
+    $sorting = db_sort($params, $sortings, 'position', 'asc');
 
     $condition .= fn_get_localizations_condition('?:checkout_questions.localization');
     $condition .= (AREA == 'A') ? '' : db_quote(' AND (?:checkout_questions.type != ?s)', 'S');
