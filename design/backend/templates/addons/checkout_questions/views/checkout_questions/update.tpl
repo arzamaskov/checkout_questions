@@ -1,3 +1,32 @@
+{script src="js/tygh/tabs.js"}
+{literal}
+    <script type="text/javascript">
+    function fn_check_option_type(value, tag_id)
+    {
+        var id = tag_id.replace('checkout_question_type_', '').replace('elm_', '');
+        Tygh.$('#tab_option_variants_' + id).toggleBy(!(value == 'S' || value == 'R' || value == 'C'));
+        Tygh.$('#required_options_' + id).toggleBy(!(value == 'I' || value == 'T' || value == 'F'));
+        Tygh.$('#extra_options_' + id).toggleBy(!(value == 'I' || value == 'T'));
+        Tygh.$('#file_options_' + id).toggleBy(!(value == 'F'));
+
+        if (value == 'C') {
+            var t = Tygh.$('table', '#content_tab_option_variants_' + id);
+            Tygh.$('.cm-non-cb', t).switchAvailability(true); // hide obsolete columns
+            Tygh.$('tbody:gt(1)', t).switchAvailability(true); // hide obsolete rows
+
+        } else if (value == 'S' || value == 'R') {
+            var t = Tygh.$('table', '#content_tab_option_variants_' + id);
+            Tygh.$('.cm-non-cb', t).switchAvailability(false); // show all columns
+            Tygh.$('tbody', t).switchAvailability(false); // show all rows
+            Tygh.$('#box_add_variant_' + id).show(); // show "add new variants" box
+
+        } else if (value == 'I' || value == 'T') {
+            Tygh.$('#extra_options_' + id).show(); // show "add new variants" box
+        }
+    }
+    </script>
+{/literal}
+
 {if $checkout_question}
     {assign var="id" value=$checkout_question.question_id}
 {else}
@@ -16,9 +45,22 @@
 <input type="hidden" class="cm-no-hide-input" name="fake" value="1" />
 <input type="hidden" class="cm-no-hide-input" name="question_id" value="{$id}" />
 
-{capture name="tabsbox"}
+<div class="tabs cm-j-tabs">
+    <ul class="nav nav-tabs">
+        <li id="tab_option_details_{$id}" class="cm-js active"><a>{__("general")}</a></li>
+        {if $checkout_question.type == "ProductOptionTypes::SELECTBOX"|enum
+            || $checkout_question.type == "ProductOptionTypes::RADIO_GROUP"|enum
+            || $checkout_question.type == "ProductOptionTypes::CHECKBOX"|enum
+            || !$checkout_question
+        }
+            <li id="tab_option_variants_{$id}" class="cm-js"><a>{__("variants")}</a></li>
+        {/if}
+    </ul>
+</div>
 
-    <div id="content_general">
+<div class="cm-tabs-content" id="tabs_content_{$id}">
+    <div id="content_tab_option_details_{$id}">
+    <fieldset>
         <div class="control-group">
             <label for="elm_checkout_question_position" class="control-label">{__("position_short")}</label>
             <div class="controls">
@@ -57,12 +99,35 @@
         {include file="views/localizations/components/select.tpl" data_name="checkout_question_data[localization]" data_from=$checkout_question.localization}
 
         {include file="common/select_status.tpl" input_name="checkout_question_data[status]" id="elm_checkout_question_status" obj_id=$id obj=$checkout_question hidden=true}
-    <!--content_general--></div>
-    <div id="content_addons" class="hidden clearfix">
-    <!--content_addons--></div>
 
-{/capture}
-{include file="common/tabsbox.tpl" content=$smarty.capture.tabsbox active_tab=$smarty.request.selected_section track=true}
+    </fieldset>
+    <!--content_tab_option_variants_{$id}--></div>
+    <div class="hidden" id="content_tab_option_variants_{$id}">
+        <fieldset>
+            <div class="table-responsive-wrapper">
+                <table class="table table-middle table--relative table-responsive">
+                    <thead>
+                        <tr class="first-sibling">
+                            <th class="cm-non-cb">{__("position_short")}</th>
+                            <th class="cm-non-cb">{__("name")}</th>
+                        </tr>
+                    </thead>
+                    {* {foreach from=$checkout_question_data.variants item="vr" name="fe_v"} *}
+                    {assign var="num" value=$smarty.foreach.fe_v.iteration}
+                    <tbody class="hover cm-row-item" id="option_variants_{$id}_{$num}">
+                        <tr>
+                            <td class="cm-non-cb" data-th="{__("position_short")}">
+                                <input type="text" name="option_data[variants][{$num}][position]" value="{$vr.position}" size="3" class="input-micro" /></td>
+                            <td class="cm-non-cb" data-th="{__("name")}">
+                                <input type="text" name="option_data[variants][{$num}][variant_name]" value="{$vr.variant_name}"  /></td>
+                        </tr>
+                    </tbody>
+                    {* {/foreach} *}
+                </table>
+            </div>
+        </fieldset>
+    <!--content_tab_option_variants_{$id}--></div>
+</div>
 
 {capture name="buttons"}
     {if !$id}
@@ -98,5 +163,31 @@
     content=$smarty.capture.mainbox
     buttons=$smarty.capture.buttons
     select_languages=true}
+
+<script type="text/javascript">
+ (function (_, $) {
+     var support_inventory_type = [
+	 '{"ProductOptionTypes::SELECTBOX"|enum}',
+	 '{"ProductOptionTypes::RADIO_GROUP"|enum}',
+	 '{"ProductOptionTypes::CHECKBOX"|enum}'
+     ];
+     $.ceEvent('on', 'ce.commoninit', function (context) {
+         var $self = $('.cm-option-type-selector', context);
+	 var $parent = $($self.data('caOptionInventorySelector'));
+	 if ($self.length) {
+	     $self.on('change', function(){
+		 var value = $self.val();
+		 if (support_inventory_type.indexOf(value) !== -1) {
+		     $parent.prop("disabled", false);
+		 } else {
+		     $parent.prop("disabled", true);
+		     $parent.prop("checked", false);
+		 }
+	     });
+	     $self.trigger('change');
+	 }});
+ }(Tygh, Tygh.$));
+</script>
+
 
 {** checkout questions section **}
