@@ -57,11 +57,11 @@
         {include file="views/localizations/components/select.tpl" data_name="checkout_question_data[localization]" data_from=$checkout_question.localization}
 
         {include file="common/select_status.tpl" input_name="checkout_question_data[status]" id="elm_checkout_question_status" obj_id=$id obj=$checkout_question hidden=true}
-
-        <div id="content_addons" class="hidden clearfix"></div>
+    <!--content_general--></div>
+    <div id="content_addons" class="hidden clearfix">
+    <!--content_addons--></div>
 
 {/capture}
-
 {include file="common/tabsbox.tpl" content=$smarty.capture.tabsbox active_tab=$smarty.request.selected_section track=true}
 
 {capture name="buttons"}
