@@ -36,7 +36,6 @@
                 <select name="type" id="elm_type">
                     <option value="">{__("all")}</option>
                     <option {if $search.type == "S"}selected="selected"{/if} value="S">{__("checkout_question_selectbox")}</option>
-                    <option {if $search.type == "R"}selected="selected"{/if} value="R">{__("checkout_question_radio")}</option>
                     <option {if $search.type == "C"}selected="selected"{/if} value="C">{__("checkout_question_checkbox")}</option>
                     <option {if $search.type == "I"}selected="selected"{/if} value="I">{__("checkout_question_input")}</option>
                     <option {if $search.type == "T"}selected="selected"{/if} value="T">{__("checkout_question_text")}</option>
