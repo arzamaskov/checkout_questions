@@ -9,7 +9,9 @@
 
     <queries>
         <item>DROP TABLE IF EXISTS ?:checkout_questions</item>
-        <item>DROP TABLE IF EXISTS ?:checkout_question_descripstions</item>
+        <item>DROP TABLE IF EXISTS ?:checkout_question_descriptions</item>
+        <item>DROP TABLE IF EXISTS ?:checkout_question_variants</item>
+        <item>DROP TABLE IF EXISTS ?:checkout_question_variant_descriptions</item>
         <item>
             CREATE TABLE `?:checkout_questions` (
                 `question_id` mediumint(8) unsigned NOT NULL auto_increment,
@@ -32,8 +34,26 @@
                 PRIMARY KEY (`question_id`, `lang_code`)
                 ) Engine=MyISAM DEFAULT CHARSET UTF8;
         </item>
+        <item>
+            CREATE TABLE `?:checkout_question_variants` (
+                `variant_id` mediumint(8) unsigned NOT NULL auto_increment,
+                `question_id` mediumint(8) unsigned NOT NULL default 0,
+                `position` smallint(5) unsigned NOT NULL default '0',
+                PRIMARY KEY (`variant_id`)
+            ) Engine=MyISAM DEFAULT CHARSET UTF8;
+        </item>
+        <item>
+            CREATE TABLE `?:checkout_question_variant_descriptions` (
+                `variant_id` mediumint(8) unsigned NOT NULL default 0,
+                `title` mediumtext,
+                `lang_code` char(2) NOT NULL default '',
+                PRIMARY KEY (`variant_id`, `lang_code`)
+                ) Engine=MyISAM DEFAULT CHARSET UTF8;
+        </item>
         <item for="uninstall">DROP TABLE IF EXISTS ?:checkout_questions;</item>
         <item for="uninstall">DROP TABLE IF EXISTS ?:checkout_question_descriptions;</item>
+        <item for="uninstall">DROP TABLE IF EXISTS ?:checkout_question_variants;</item>
+        <item for="uninstall">DROP TABLE IF EXISTS ?:checkout_question_variant_descriptions;</item>
     </queries>
     
     
