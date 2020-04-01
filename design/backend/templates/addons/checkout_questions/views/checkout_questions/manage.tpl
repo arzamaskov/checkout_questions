@@ -67,11 +67,10 @@
                 </td>
 
                 <td class="nowrap row-status {$no_hide_input} mobile-hide">
-                    {if $checkout_question.type == "S"}{__("checkout_question_selectbox")}
-                    {elseif $checkout_question.type == "R"}{__("checkout_question_radio")}
-                    {elseif $checkout_question.type == "C"}{__("checkout_question_checkbox")}
-                    {elseif $checkout_question.type == "I"}{__("checkout_question_input")}
-                    {else}{__("checkout_question.text")}{/if}
+                    {if $checkout_question.type == "S"}{__("selectbox")}
+                    {elseif $checkout_question.type == "C"}{__("checkbox")}
+                    {elseif $checkout_question.type == "I"}{__("text")}
+                    {else}{__("textarea")}{/if}
                 </td>
 
                 <td class="nowrap row-status {$no_hide_input} mobile-hide">
@@ -113,7 +112,7 @@
     {dropdown content=$smarty.capture.tools_list class="mobile-hide"}
     {/capture}
     {capture name="adv_buttons"}
-    {include file="common/tools.tpl" tool_href="checkout_questions.add" prefix="top" hide_tools="true" title=__("add_checkout_question")
+    {include file="common/tools.tpl" tool_href="checkout_questions.add" prefix="top" hide_tools="true" title=__("checkout_questions.add")
     icon="icon-plus"}
     {/capture}
 
