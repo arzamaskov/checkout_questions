@@ -128,12 +128,30 @@ function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE
 
     $checkout_question = db_get_row("SELECT " . implode(", ", $fields) . " FROM ?:checkout_questions " . implode(" ", $joins) ." $condition");
 
+    $v_fields = array(
+        '?:checkout_question_variants.variant_id',
+        '?:checkout_question_variants.position',
+        '?:checkout_question_variant_descriptions.variant',
+    );
+    $v_join = db_quote("LEFT JOIN ?:checkout_question_variant_descriptions ON ?:checkout_question_variant_descriptions.variant_id = ?:checkout_question_variants.variant_id AND ?:checkout_question_variant_descriptions.lang_code = ?s", $lang_code);
+
+    $v_condition = db_quote("WHERE ?:checkout_question_variants.question_id = ?i", $question_id);
+
+    $variants = db_get_hash_array("SELECT " . implode(", ", $v_fields) ." FROM ?:checkout_question_variants" . " $v_join" ." $v_condition", 'variant_id');
+
+    $checkout_question['variants'] = $variants;
+
     return $checkout_question;
 }
 
 function fn_checkout_questions_update_question($data, $question_id, $lang_code = DESCR_SL)
 {
     SecurityHelper::sanitizeObjectData('checkout_question', $data);
+    if ($question_id) {
+        $action = '';
+    } else {
+        $action = 'create';
+    }
 
     if (isset($data['timestamp'])) {
         $data['timestamp'] = fn_parse_date($data['timestamp']);
@@ -144,14 +162,48 @@ function fn_checkout_questions_update_question($data, $question_id, $lang_code =
     if (!empty($question_id)) {
         db_query("UPDATE ?:checkout_questions SET ?u WHERE question_id = ?i", $data, $question_id);
         db_query("UPDATE ?:checkout_question_descriptions SET ?u WHERE question_id = ?i AND lang_code = ?s", $data, $question_id, $lang_code);
-
     } else {
         $question_id = $data['question_id'] = db_query("REPLACE INTO ?:checkout_questions ?e", $data);
 
         foreach (Languages::getAll() as $data['lang_code'] => $v) {
             db_query("REPLACE INTO ?:checkout_question_descriptions ?e", $data);
         }
+    }
 
+    if (!empty($data['variants'])) {
+        $var_ids = array();
+
+        foreach ($data['variants'] as $k => $v) {
+            if ((!isset($v['variant']) || $v['variant'] == '') && $data['type'] != 'C') {
+                continue;
+            }
+
+            if ($action == 'create') {
+                unset($v['variant_id']);
+            }
+
+            $v['question_id'] = $question_id;
+
+            if (empty($v['variant_id']) || (!empty($v['variant_id']) && !db_get_field("SELECT variant_id FROM ?:checkout_question_variants WHERE variant_id = ?i", $v['variant_id']))) {
+                $v['variant_id'] = db_query("INSERT INTO ?:checkout_question_variants ?e", $v);
+                foreach (Languages::getAll() as $v['lang_code'] => $_v) {
+                    db_query("INSERT INTO ?:checkout_question_variant_descriptions ?e", $v);
+                }
+            } else {
+                db_query("UPDATE ?:checkout_question_variants SET ?u WHERE variant_id = ?i", $v, $v['variant_id']);
+                db_query("UPDATE ?:checkout_question_variant_descriptions SET ?u WHERE variant_id = ?i AND lang_code = ?s", $v, $v['variant_id'], $lang_code);
+            }
+
+            $var_ids[] = $v['variant_id'];
+        }
+
+        // Delete obsolete variants
+        $condition = !empty($var_ids) ? db_quote('AND variant_id NOT IN (?n)', $var_ids) : '';
+        $deleted_variants = db_get_fields("SELECT variant_id FROM ?:checkout_question_variants WHERE question_id = ?i $condition", $question_id, $var_ids);
+        if (!empty($deleted_variants)) {
+            db_query("DELETE FROM ?:checkout_question_variants WHERE variant_id IN (?n)", $deleted_variants);
+            db_query("DELETE FROM ?:checkout_question_variant_descriptions WHERE variant_id IN (?n)", $deleted_variants);
+        }
     }
 
     return $question_id;
@@ -167,6 +219,11 @@ function fn_delete_checkout_question_by_id($question_id)
     if (!empty($question_id) && fn_check_company_id('checkout_questions', 'question_id', $question_id)) {
         db_query("DELETE FROM ?:checkout_questions WHERE question_id = ?i", $question_id);
         db_query("DELETE FROM ?:checkout_question_descriptions WHERE question_id = ?i", $question_id);
+        $deleted_variants = db_get_fields("SELECT variant_id FROM ?:checkout_question_variants WHERE question_id = ?i", $question_id);
+        if (!empty($deleted_variants)) {
+            db_query("DELETE FROM ?:checkout_question_variants WHERE variant_id IN (?n)", $deleted_variants);
+            db_query("DELETE FROM ?:checkout_question_variant_descriptions WHERE variant_id IN (?n)", $deleted_variants);
+        }
 
         Block::instance()->removeDynamicObjectData('checkout_questions', $question_id);
 
