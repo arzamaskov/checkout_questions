@@ -109,20 +109,33 @@
                     <thead>
                         <tr class="first-sibling">
                             <th class="cm-non-cb">{__("position_short")}</th>
-                            <th class="cm-non-cb">{__("name")}</th>
+                            <th>{__("variant")}</th>
                         </tr>
                     </thead>
-                    {* {foreach from=$checkout_question_data.variants item="vr" name="fe_v"} *}
+                    <tbody>
+                    {foreach from=$checkout_question.variants item="vr" name="fe_v"}
                     {assign var="num" value=$smarty.foreach.fe_v.iteration}
                     <tbody class="hover cm-row-item" id="option_variants_{$id}_{$num}">
                         <tr>
                             <td class="cm-non-cb" data-th="{__("position_short")}">
-                                <input type="text" name="option_data[variants][{$num}][position]" value="{$vr.position}" size="3" class="input-micro" /></td>
-                            <td class="cm-non-cb" data-th="{__("name")}">
-                                <input type="text" name="option_data[variants][{$num}][variant_name]" value="{$vr.variant_name}"  /></td>
+                                <input type="text" name="checkout_question_data[variants][{$num}][position]" value="{$vr.position}" size="3" class="input-micro" /></td>
+                            <td  data-th="{__("variant")}">
+                                <input type="text" name="checkout_question_data[variants][{$num}][variant]" value="{$vr.variant}" /></td>
                         </tr>
                     </tbody>
-                    {* {/foreach} *}
+                    {/foreach}
+                    {math equation="x + 1" assign="num" x=$num|default:0}{assign var="vr" value=""}
+                    <tbody class="hover cm-row-item" id="box_add_variant_{$id}">
+                        <tr>
+                            <td class="cm-non-cb" data-th="{__("position")}">
+                                <input type="text" name="checkout_question_data[variants][{$num}][position]" value="" size="3" class="input-micro" /></td>
+                            <td data-th="{__("name")}">
+                                <input type="text" name="checkout_question_data[variants][{$num}][variant]" value="" /></td>
+                            <td class="right cm-non-cb{if $checkout_question.type == "ProductOptionTypes::CHECKBOX"|enum} hidden{/if}">
+                                {include file="buttons/multiple_buttons.tpl" item_id="add_variant_`$id`" tag_level="2"}
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </fieldset>
