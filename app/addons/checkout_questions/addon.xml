@@ -45,7 +45,7 @@
         <item>
             CREATE TABLE `?:checkout_question_variant_descriptions` (
                 `variant_id` mediumint(8) unsigned NOT NULL default 0,
-                `title` mediumtext,
+                `variant` mediumtext,
                 `lang_code` char(2) NOT NULL default '',
                 PRIMARY KEY (`variant_id`, `lang_code`)
                 ) Engine=MyISAM DEFAULT CHARSET UTF8;
