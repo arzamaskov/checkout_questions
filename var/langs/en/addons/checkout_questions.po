@@ -1,0 +1,49 @@
+msgid ""
+msgstr "Project-Id-Version: tygh\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: English\n"
+"Language: en_US"
+
+msgctxt "Addons::name::checkout_questions"
+msgid "Checkout questions"
+msgstr "Checkout questions"
+
+msgctxt "Addons::description::checkout_questions"
+msgid "Usint this addon, the store administrator can create, edit, and delete checkout questions"
+msgstr "Usint this addon, the store administrator can create, edit, and delete checkout questions"
+
+msgctxt "Languages::checkout_questions"
+msgid "Checkout question"
+msgstr "Checkout question"
+
+msgctxt "Languages::checkout_questions.page_title"
+msgid "Checkout question list"
+msgstr "Checkout question list"
+
+msgctxt "Languages::checkout_questions.add"
+msgid "Add checkout question"
+msgstr "Add checkout question"
+
+msgctxt "Languages::checkout_questions.new_question"
+msgid "New checkout question"
+msgstr "New checkout question"
+
+msgctxt "Languages::checkout_question.title"
+msgid "Title question"
+msgstr "Title question"
+
+msgctxt "Languages::checkout_questions.editing_question"
+msgid "Editing checkout question"
+msgstr "Editing checkout question"
+
+msgctxt "Languages::checkout_question_details_notes"
+msgid "Try checkout questions, it's pretty funny"
+msgstr "Try checkout questions, it's pretty funny"
+
+msgctxt "Languages::checkout_question.required"
+msgid "Required"
+msgstr "Required"
+
+msgctxt "Languages::checkout_question.no_required"
+msgid "NO required"
+msgstr "NO required"
