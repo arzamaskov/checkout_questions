@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD']	== 'POST') {
     }
 
     //
-    // Add/edit banners
+    // Add/edit question
     //
     if ($mode == 'update') {
         $question_id = fn_checkout_questions_update_question($_REQUEST['checkout_question_data'], $_REQUEST['question_id'], DESCR_SL);
