@@ -13,7 +13,7 @@ msgid "Usint this addon, the store administrator can create, edit, and delete ch
 msgstr "При помощи этого модуля администратор магазина может создавать, редактировать и удалять вопросы в блоке оформления заказа"
 
 msgctxt "Languages::checkout_questions"
-msgid "Checkout question"
+msgid "Checkout questions"
 msgstr "Вопросы в блоке оформления заказа"
 
 msgctxt "Languages::checkout_questions.page_title"

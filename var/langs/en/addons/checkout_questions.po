@@ -13,8 +13,8 @@ msgid "Usint this addon, the store administrator can create, edit, and delete ch
 msgstr "Usint this addon, the store administrator can create, edit, and delete checkout questions"
 
 msgctxt "Languages::checkout_questions"
-msgid "Checkout question"
-msgstr "Checkout question"
+msgid "Checkout questions"
+msgstr "Checkout questions"
 
 msgctxt "Languages::checkout_questions.page_title"
 msgid "Checkout question list"
