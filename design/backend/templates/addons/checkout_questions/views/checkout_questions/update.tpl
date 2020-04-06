@@ -118,9 +118,14 @@
                     <tbody class="hover cm-row-item" id="option_variants_{$id}_{$num}">
                         <tr>
                             <td class="cm-non-cb" data-th="{__("position_short")}">
-                                <input type="text" name="checkout_question_data[variants][{$num}][position]" value="{$vr.position}" size="3" class="input-micro" /></td>
+                                <input type="text" name="checkout_question_data[variants][{$num}][position]" value="{$vr.position}" size="3" class="input-micro" />
+                            </td>
                             <td  data-th="{__("variant")}">
-                                <input type="text" name="checkout_question_data[variants][{$num}][variant]" value="{$vr.variant}" /></td>
+                                <input type="text" name="checkout_question_data[variants][{$num}][variant]" value="{$vr.variant}" />
+                            </td>
+                            <td class="nowrap">
+                                <input type="hidden" name="checkout_question_data[variants][{$num}][variant_id]" value="{$vr.variant_id}" class="{$cm_no_hide_input}" />
+                            </td>
                         </tr>
                     </tbody>
                     {/foreach}
