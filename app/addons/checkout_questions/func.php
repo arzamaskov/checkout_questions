@@ -29,7 +29,6 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
     if (AREA == 'C') {
         $params['status'] = 'A';
     }
-
     $sortings = array(
         'position' => '?:checkout_questions.position',
         'timestamp' => '?:checkout_questions.timestamp',
@@ -47,7 +46,7 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
     $sorting = db_sort($params, $sortings, 'position', 'asc');
 
     $condition .= fn_get_localizations_condition('?:checkout_questions.localization');
-    $condition .= (AREA == 'A') ? '' : db_quote(' AND (?:checkout_questions.type != ?s)', 'S');
+    $condition .= (AREA == 'A') ? '' : db_quote(' AND (?:checkout_questions.status = ?s)', 'A');
 
     if (!empty($params['item_ids'])) {
         $condition .= db_quote(' AND ?:checkout_questions.question_id IN (?n)', explode(',', $params['item_ids']));
@@ -95,11 +94,31 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
 
     if (!empty($params['item_ids'])) {
         $questions = fn_sort_by_ids($questions, explode(',', $params['item_ids']), 'question_id');
-    }   
+    }
 
-    return array($questions, $params);
+    $v_fields = array(
+        '?:checkout_question_variants.variant_id',
+        '?:checkout_question_variants.position',
+        '?:checkout_question_variant_descriptions.variant',
+    );
+    $checkout_questions = array();
+
+    foreach ($questions as $question) {
+        $question_id = $question['question_id'];
+        $question_type = $question['type'];
+
+        if ($question_type == 'C' || $question_type == 'S') {
+            $v_join = db_quote("LEFT JOIN ?:checkout_question_variant_descriptions ON ?:checkout_question_variant_descriptions.variant_id = ?:checkout_question_variants.variant_id AND ?:checkout_question_variant_descriptions.lang_code = ?s", $lang_code);
+            $v_condition = db_quote("WHERE ?:checkout_question_variants.question_id = ?i", $question_id);
+
+            $question['variants'] = db_get_hash_array("SELECT " . implode(", ", $v_fields) ." FROM ?:checkout_question_variants" . " $v_join" ." $v_condition", 'variant_id');
+        }
+        
+        $checkout_questions[] = $question;
+    }
+    
+    return array($checkout_questions, $params);
 }
-
 
 //
 // Get specific checkout question data
@@ -147,10 +166,10 @@ function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE
 function fn_checkout_questions_update_question($data, $question_id, $lang_code = DESCR_SL)
 {
     SecurityHelper::sanitizeObjectData('checkout_question', $data);
-    if ($question_id) {
-        $action = '';
-    } else {
+    if (empty($question_id)) {
         $action = 'create';
+    } else {
+        $action = 'update';
     }
 
     if (isset($data['timestamp'])) {
@@ -228,4 +247,10 @@ function fn_delete_checkout_question_by_id($question_id)
         Block::instance()->removeDynamicObjectData('checkout_questions', $question_id);
 
     }
+}
+
+function fn_get_checkout_question_list()
+{
+    $questions = db_get_hash_array("SELECT * FROM ?:checkout_questions", 'question_id');
+    return $questions;
 }
