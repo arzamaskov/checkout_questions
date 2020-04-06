@@ -107,7 +107,7 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
         $question_id = $question['question_id'];
         $question_type = $question['type'];
 
-        if ($question_type == 'C' || $question_type == 'S') {
+        if ($question_type == 'S') {
             $v_join = db_quote("LEFT JOIN ?:checkout_question_variant_descriptions ON ?:checkout_question_variant_descriptions.variant_id = ?:checkout_question_variants.variant_id AND ?:checkout_question_variant_descriptions.lang_code = ?s", $lang_code);
             $v_condition = db_quote("WHERE ?:checkout_question_variants.question_id = ?i", $question_id);
 
@@ -193,7 +193,7 @@ function fn_checkout_questions_update_question($data, $question_id, $lang_code =
         $var_ids = array();
 
         foreach ($data['variants'] as $k => $v) {
-            if ((!isset($v['variant']) || $v['variant'] == '') && $data['type'] != 'C') {
+            if ((!isset($v['variant']) || $v['variant'] == '')) {
                 continue;
             }
 
