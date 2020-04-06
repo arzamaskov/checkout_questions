@@ -4,24 +4,15 @@
     function fn_check_option_type(value, tag_id)
     {
         var id = tag_id.replace('checkout_question_type_', '').replace('elm_', '');
-        Tygh.$('#tab_option_variants_' + id).toggleBy(!(value == 'S' || value == 'R' || value == 'C'));
-        Tygh.$('#required_options_' + id).toggleBy(!(value == 'I' || value == 'T' || value == 'F'));
-        Tygh.$('#extra_options_' + id).toggleBy(!(value == 'I' || value == 'T'));
-        Tygh.$('#file_options_' + id).toggleBy(!(value == 'F'));
+        Tygh.$('#tab_option_variants_' + id).toggleBy(!(value == 'S'));
+        Tygh.$('#required_options_' + id).toggleBy(!(value == 'I' || value == 'T'));
 
-        if (value == 'C') {
-            var t = Tygh.$('table', '#content_tab_option_variants_' + id);
-            Tygh.$('.cm-non-cb', t).switchAvailability(true); // hide obsolete columns
-            Tygh.$('tbody:gt(1)', t).switchAvailability(true); // hide obsolete rows
-
-        } else if (value == 'S' || value == 'R') {
+        if (value == 'S') {
             var t = Tygh.$('table', '#content_tab_option_variants_' + id);
             Tygh.$('.cm-non-cb', t).switchAvailability(false); // show all columns
             Tygh.$('tbody', t).switchAvailability(false); // show all rows
             Tygh.$('#box_add_variant_' + id).show(); // show "add new variants" box
 
-        } else if (value == 'I' || value == 'T') {
-            Tygh.$('#extra_options_' + id).show(); // show "add new variants" box
         }
     }
     </script>
@@ -49,8 +40,6 @@
     <ul class="nav nav-tabs">
         <li id="tab_option_details_{$id}" class="cm-js active"><a>{__("general")}</a></li>
         {if $checkout_question.type == "ProductOptionTypes::SELECTBOX"|enum
-            || $checkout_question.type == "ProductOptionTypes::RADIO_GROUP"|enum
-            || $checkout_question.type == "ProductOptionTypes::CHECKBOX"|enum
             || !$checkout_question
         }
             <li id="tab_option_variants_{$id}" class="cm-js"><a>{__("variants")}</a></li>
@@ -185,9 +174,7 @@
 <script type="text/javascript">
  (function (_, $) {
      var support_inventory_type = [
-	 '{"ProductOptionTypes::SELECTBOX"|enum}',
-	 '{"ProductOptionTypes::RADIO_GROUP"|enum}',
-	 '{"ProductOptionTypes::CHECKBOX"|enum}'
+	 '{"ProductOptionTypes::SELECTBOX"|enum}'
      ];
      $.ceEvent('on', 'ce.commoninit', function (context) {
          var $self = $('.cm-option-type-selector', context);
