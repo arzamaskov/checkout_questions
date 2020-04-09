@@ -35,7 +35,7 @@
                                     <option value="">--</option>
                                 {/if}
                                 {foreach from=$question.variants item="variant"}
-                                    <option {if {$answer.{$question.question_id}} == $variant.variant}selected{/if} value="{$variant.variant}">{$variant.variant}</option>
+                                    <option {if {$answer.{$question.question_id}.value} == $variant.variant}selected{/if} value="{$variant.variant}">{$variant.variant}</option>
                                 {/foreach}
                             </select>
                             
@@ -50,7 +50,7 @@
                                     <label class="{if $question.required == "YesNo::YES"|enum}cm-required{/if}" for="question_{$question.question_id}">{$question.title} &nbsp;</label>
                                 </div>
                                 <div class="ty-profile-field__switch-actions">
-                                    <input type="hidden" name="{$field_name}" value="{"YesNo::NO"|enum}" data-ca-lite-checkout-field="{$field_name_helper}" />
+                                    <input type="hidden" name="checkout_questions_data[{$question.question_id}]" value="{"YesNo::NO"|enum}" data-ca-lite-checkout-field="{$field_name_helper}" />
                                     <input class="checkbox"
                                             id="question_{$question.question_id}"
                                             type="checkbox"
@@ -61,7 +61,7 @@
                                             autocomplete="{$field.autocomplete}"
                                             aria-label="{$field.description}"
                                             title="{$field.description}"
-                                            {if {$answer.{$question.question_id}} == "YesNo::YES"|enum}checked{/if}
+                                            {if {$answer.{$question.question_id}.value} == "YesNo::YES"|enum}checked{/if}
                                             {$field.attributes|render_tag_attrs nofilter}
                                         />
                                 </div>
@@ -81,7 +81,7 @@
                                 id="question_{$question.question_id}"
                                 placeholder=" "
                                 name="checkout_questions_data[{$question.question_id}]"
-                                value="{$answer.{$question.question_id}}"
+                                value="{$answer.{$question.question_id}.value}"
                                 class="litecheckout__input"
                             />
                             <span class="litecheckout__label {if $question.required == "YesNo::YES"|enum}cm-required{/if}" for="question_{$question.question_id}">{$question.title}</span>
@@ -104,7 +104,7 @@
                                 aria-label="{$field.description}"
                                 title="{$field.description}"
                                 {$field.attributes|render_tag_attrs nofilter}
-                            >{$answer.{$question.question_id}}</textarea>
+                            >{$answer.{$question.question_id}.value}</textarea>
                             <span class="litecheckout__label {if $question.required == "YesNo::YES"|enum}cm-required{/if}" for="question_{$question.question_id}">{$question.title}</span>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                                     <option value="">--</option>
                                 {/if}
                                 {foreach from=$question.variants item="variant"}
-                                    <option {if {$answer.{$question.question_id}} == $variant.variant}selected{/if} value="{$variant.variant}">{$variant.variant}</option>
+                                    <option {if {$answer.{$question.question_id}.value} == $variant.variant}selected{/if} value="{$variant.variant}">{$variant.variant}</option>
                                 {/foreach}
                             </select>
                             
@@ -178,7 +178,7 @@
                                             autocomplete="{$field.autocomplete}"
                                             aria-label="{$field.description}"
                                             title="{$field.description}"
-                                            {if {$answer.{$question.question_id}} == "YesNo::YES"|enum}checked{/if}
+                                            {if {$answer.{$question.question_id}.value} == "YesNo::YES"|enum}checked{/if}
                                             {$field.attributes|render_tag_attrs nofilter}
                                         />
                                 </div>
@@ -198,7 +198,7 @@
                                 id="question_{$question.question_id}"
                                 placeholder=" "
                                 name="checkout_questions_data[{$question.question_id}]"
-                                value="{$answer.{$question.question_id}}"
+                                value="{$answer.{$question.question_id}.value}"
                                 class="litecheckout__input"
                             />
                             <span class="litecheckout__label {if $question.required == "YesNo::YES"|enum}cm-required{/if}" for="question_{$question.question_id}">{$question.title}</span>
@@ -221,7 +221,7 @@
                                 aria-label="{$field.description}"
                                 title="{$field.description}"
                                 {$field.attributes|render_tag_attrs nofilter}
-                            >{$answer.{$question.question_id}}</textarea>
+                            >{$answer.{$question.question_id}.value}</textarea>
                             <span class="litecheckout__label {if $question.required == "YesNo::YES"|enum}cm-required{/if}" for="question_{$question.question_id}">{$question.title}</span>
                         </div>
                     </div>
