@@ -254,3 +254,20 @@ function fn_get_checkout_question_list()
     $questions = db_get_hash_array("SELECT * FROM ?:checkout_questions", 'question_id');
     return $questions;
 }
+
+function fn_checkout_questions_place_order(&$order_id, &$action, &$order_status, &$cart)
+{
+        $order_data = array(
+                'order_id' => $order_id,
+                'type' => QUESTIONS,
+                'data' => serialize($cart['checkout_questions_data']),
+            );
+            db_query("REPLACE INTO ?:order_data ?e", $order_data);
+}
+
+function fn_checkout_questions_get_order_info(&$order, $additional_data)
+{   
+    if (!empty($additional_data[QUESTIONS])) {
+            $order['checkout_questions_data'] = unserialize($additional_data[QUESTIONS]);
+        }
+}
