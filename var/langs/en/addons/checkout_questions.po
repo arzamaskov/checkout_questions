@@ -32,6 +32,10 @@ msgctxt "Languages::checkout_question.title"
 msgid "Title question"
 msgstr "Title question"
 
+msgctxt "Languages::checkout_question.answer"
+msgid "Answer"
+msgstr "Answer"
+
 msgctxt "Languages::checkout_questions.editing_question"
 msgid "Editing checkout question"
 msgstr "Editing checkout question"
