@@ -12,6 +12,10 @@ msgctxt "Addons::description::checkout_questions"
 msgid "Usint this addon, the store administrator can create, edit, and delete checkout questions"
 msgstr "Usint this addon, the store administrator can create, edit, and delete checkout questions"
 
+msgctxt "Languages::checkout_questions_menu_description"
+msgid "Create, edit, and delete checkout questions."
+msgstr "Create, edit, and delete checkout questions."
+
 msgctxt "Languages::checkout_questions"
 msgid "Checkout questions"
 msgstr "Checkout questions"
@@ -29,8 +33,8 @@ msgid "New checkout question"
 msgstr "New checkout question"
 
 msgctxt "Languages::checkout_question.title"
-msgid "Title question"
-msgstr "Title question"
+msgid "Question"
+msgstr "Question"
 
 msgctxt "Languages::checkout_question.answer"
 msgid "Answer"
