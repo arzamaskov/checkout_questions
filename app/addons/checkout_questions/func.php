@@ -273,6 +273,11 @@ function fn_get_checkout_question_list()
     return $questions;
 }
 
+/**
+ * Places an order
+ * 
+ * @see \fn_place_order
+ */
 function fn_checkout_questions_place_order(&$order_id, &$action, &$order_status, &$cart)
 {
         $order_data = array(
@@ -295,10 +300,6 @@ function fn_checkout_questions_get_order_info(&$order, $additional_data)
 
             foreach ($order['checkout_questions_data'] as $item) {
                 $order['checkout_questions'] = $item;
-                foreach ($item as $value) {
-                    $order['checkout_question_title'][] = $value['title'];
-                    $order['checkout_question_value'][] = $value['value'];
-                }
             }
         }
 }
