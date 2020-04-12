@@ -8,7 +8,7 @@ use Tygh\Tools\SecurityHelper;
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
 /**
- * Gets questions list by search params
+ * Gets checkout questions list by search params
  *
  * @param array  $params         Checkout question search params
  * @param string $lang_code      2 letters language code
@@ -120,9 +120,14 @@ function fn_get_checkout_questions($params = array(), $lang_code = CART_LANGUAGE
     return array($checkout_questions, $params);
 }
 
-//
-// Get specific checkout question data
-//
+/**
+ * Get specific checkout question data
+ *
+ * @param string $lang_code     2 letters language code
+ * @param int    $qustion_id    Checkout qestion identificator
+ *
+ * @return array Checkout question data
+ */
 function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE)
 {
     // Unset all SQL variables
@@ -163,6 +168,14 @@ function fn_get_checkout_questions_data($question_id, $lang_code = CART_LANGUAGE
     return $checkout_question;
 }
 
+/**
+ * Update specific checkout question data
+ * @param array $data           Request data
+ * @param string $lang_code     2 letters language code
+ * @param int    $qustion_id    Checkout qestion identificator
+ *
+ * @return int Checkout qestion identificator
+ */
 function fn_checkout_questions_update_question($data, $question_id, $lang_code = DESCR_SL)
 {
     SecurityHelper::sanitizeObjectData('checkout_question', $data);
@@ -249,6 +262,11 @@ function fn_delete_checkout_question_by_id($question_id)
     }
 }
 
+/**
+ * Gets checkout questions list
+ *
+ * @return array Checkout questions list
+ */
 function fn_get_checkout_question_list()
 {
     $questions = db_get_hash_array("SELECT * FROM ?:checkout_questions", 'question_id');
@@ -265,9 +283,22 @@ function fn_checkout_questions_place_order(&$order_id, &$action, &$order_status,
             db_query("REPLACE INTO ?:order_data ?e", $order_data);
 }
 
+/**
+ * Gets order data
+ * 
+ * @see \fn_get_order_info
+ */
 function fn_checkout_questions_get_order_info(&$order, $additional_data)
 {   
     if (!empty($additional_data[QUESTIONS])) {
             $order['checkout_questions_data'] = unserialize($additional_data[QUESTIONS]);
+
+            foreach ($order['checkout_questions_data'] as $item) {
+                $order['checkout_questions'] = $item;
+                foreach ($item as $value) {
+                    $order['checkout_question_title'][] = $value['title'];
+                    $order['checkout_question_value'][] = $value['value'];
+                }
+            }
         }
 }
