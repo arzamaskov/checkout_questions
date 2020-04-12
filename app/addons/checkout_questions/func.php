@@ -296,9 +296,9 @@ function fn_checkout_questions_place_order(&$order_id, &$action, &$order_status,
 function fn_checkout_questions_get_order_info(&$order, $additional_data)
 {   
     if (!empty($additional_data[QUESTIONS])) {
-            $order['checkout_questions_data'] = unserialize($additional_data[QUESTIONS]);
+            $data = unserialize($additional_data[QUESTIONS]);
 
-            foreach ($order['checkout_questions_data'] as $item) {
+            foreach ($data as $item) {
                 $order['checkout_questions'] = $item;
             }
         }
