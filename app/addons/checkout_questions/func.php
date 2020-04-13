@@ -256,9 +256,6 @@ function fn_delete_checkout_question_by_id($question_id)
             db_query("DELETE FROM ?:checkout_question_variants WHERE variant_id IN (?n)", $deleted_variants);
             db_query("DELETE FROM ?:checkout_question_variant_descriptions WHERE variant_id IN (?n)", $deleted_variants);
         }
-
-        Block::instance()->removeDynamicObjectData('checkout_questions', $question_id);
-
     }
 }
 
