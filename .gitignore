@@ -1,0 +1,24 @@
+### Simtech Development rules ###
+_tools/
+var/*
+!var/themes_repository
+!var/langs
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# VisualStudioCode #
+####################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace

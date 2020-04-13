@@ -1,0 +1,57 @@
+msgid ""
+msgstr "Project-Id-Version: tygh\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Russian\n"
+"Language: ru_RU"
+
+msgctxt "Addons::name::checkout_questions"
+msgid "Checkout questions"
+msgstr "Вопросы в блоке оформления заказа"
+
+msgctxt "Addons::description::checkout_questions"
+msgid "Usint this addon, the store administrator can create, edit, and delete checkout questions"
+msgstr "При помощи этого модуля администратор магазина может создавать, редактировать и удалять вопросы в блоке оформления заказа"
+
+msgctxt "Languages::checkout_questions_menu_description"
+msgid "Create, edit, and delete checkout questions."
+msgstr "Создание, редактирование и удаление вопросов в блоке оформления заказа."
+
+msgctxt "Languages::checkout_questions"
+msgid "Checkout questions"
+msgstr "Вопросы в блоке оформления заказа"
+
+msgctxt "Languages::checkout_questions.page_title"
+msgid "Checkout question list"
+msgstr "Список вопросов в блоке оформления заказа"
+
+msgctxt "Languages::checkout_questions.add"
+msgid "Add checkout question"
+msgstr "Добавить вопрос"
+
+msgctxt "Languages::checkout_questions.new_question"
+msgid "New checkout question"
+msgstr "Новый вопрос"
+
+msgctxt "Languages::checkout_question.title"
+msgid "Question"
+msgstr "Вопрос"
+
+msgctxt "Languages::checkout_question.answer"
+msgid "Answer"
+msgstr "Ответ"
+
+msgctxt "Languages::checkout_questions.editing_question"
+msgid "Editing checkout question"
+msgstr "Редактирование вопроса"
+
+msgctxt "Languages::checkout_question_details_notes"
+msgid "Try checkout questions, it's pretty funny"
+msgstr "Попробуй вопросы, это весело"
+
+msgctxt "Languages::checkout_question.required"
+msgid "Required"
+msgstr "Оязательный"
+
+msgctxt "Languages::checkout_question.no_required"
+msgid "NO required"
+msgstr "Не обязательный"
