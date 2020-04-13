@@ -278,14 +278,14 @@ function fn_get_checkout_question_list()
  * 
  * @see \fn_place_order
  */
-function fn_checkout_questions_place_order(&$order_id, &$action, &$order_status, &$cart)
+function fn_checkout_questions_place_order($order_id, $action, $order_status, $cart)
 {
-        $order_data = array(
-                'order_id' => $order_id,
-                'type' => QUESTIONS,
-                'data' => serialize($cart['checkout_questions_data']),
-            );
-            db_query("REPLACE INTO ?:order_data ?e", $order_data);
+    $order_data = array(
+            'order_id' => $order_id,
+            'type' => QUESTIONS,
+            'data' => serialize($cart['checkout_questions_data']),
+        );
+    db_query("REPLACE INTO ?:order_data ?e", $order_data);
 }
 
 /**
