@@ -9,7 +9,7 @@
                     <th>{__("checkout_question.answer")}</th>
                 </tr>
             </thead>
-            {foreach from=$order_info.checkout_questions item=question}
+            {foreach $order_info.checkout_questions as $question}
                 <tr>
                     <td >
                         {$question.title}
